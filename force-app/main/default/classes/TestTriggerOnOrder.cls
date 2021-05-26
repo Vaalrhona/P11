@@ -67,7 +67,14 @@ public with sharing class TestTriggerOnOrder {
     public static void inactiveAccountWhenOrdersDeleted(){
         List<Order> os=[SELECT ID FROM Order WHERE Account.Name = 'Test Account 1'];
         System.assertEquals(2, os.size());
-        delete os;
+        //delete os;
+
+        delete os[0];
+
+        Order lastO = [SELECT ID FROM Order WHERE Account.Name = 'Test Account 1'];
+        System.assert(lastO!=null);
+
+        delete os[1];
 
         os=[SELECT ID FROM Order WHERE Account.Name = 'Test Account 1'];
         System.assertEquals(0, os.size());
