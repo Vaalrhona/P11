@@ -1,5 +1,6 @@
 public with sharing class OrderHandler {
 
+    //status can't be set to actif if there's not order related to the account
     public static void preventStatusChange(List<Order> orders){
         List<Order> items = [SELECT ID FROM Order WHERE ID IN (SELECT OrderID FROM OrderItem WHERE OrderID IN :orders)];
         for(Order o: orders){
@@ -9,6 +10,7 @@ public with sharing class OrderHandler {
         }
     }
 
+    //check if there's still orders related to the account in case of deletion and set the acc to inactive if no order
     public static void checkActiveAccount(List<Order> orders){
         Set<ID> oldIDS = new Set<ID>();
         for(Order o: orders){
@@ -35,6 +37,7 @@ public with sharing class OrderHandler {
         update accountsToUpdate;
     }
 
+    //insert tasks related to accounts in scope
     public static void insertTasks(List<Account> accounts){
         List<Task> tasksToInsert = new List<Task>();
         for(Account a: accounts){

@@ -1,5 +1,6 @@
 public with sharing class BatchAccountWOOrder implements Database.Batchable<sObject>{
 
+    //select all accounts without orders or tasks
     public Database.QueryLocator start(Database.BatchableContext BC){
         set<id> taskWhatIDs = new set<id>();
         for(Task t: [SELECT WhatId FROM Task WHERE what.type = 'Account' AND TaskSubType='Call']){
